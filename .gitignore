@@ -1,0 +1,4 @@
+.vercel
+node_modules
+dist
+.unlimited-AI-Api-keys.env

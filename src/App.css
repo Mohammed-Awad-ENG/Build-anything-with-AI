@@ -1,0 +1,240 @@
+.app-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  overflow: hidden;
+}
+
+.stars-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.globe-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.main-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 800px;
+  padding: 2rem;
+  pointer-events: none; /* Let events pass to globe where empty */
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  pointer-events: auto;
+  animation: slideDown 0.8s ease-out;
+}
+
+.sparkles-icon {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+.header h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #fff 0%, #a0a0a0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header p {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400;
+}
+
+.response-container {
+  background: rgba(15, 15, 15, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 2.5rem;
+  margin-bottom: 3rem;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+  pointer-events: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.response-title {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #ff3b30;
+  margin-bottom: 1rem;
+  letter-spacing: -0.05em;
+  text-shadow: 0 0 30px rgba(255, 59, 48, 0.3);
+}
+
+.response-reason {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  pointer-events: auto;
+  margin-top: auto;
+  animation: slideUp 0.8s ease-out;
+}
+
+.prompt-form {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  background: rgba(20, 20, 20, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 99px;
+  padding: 0.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.prompt-form:focus-within {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(20, 20, 20, 0.8);
+}
+
+.prompt-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 1rem 1.5rem;
+  outline: none;
+  font-family: inherit;
+}
+
+.prompt-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.submit-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: not-allowed;
+  transition: all 0.2s ease;
+  margin-right: 0.5rem;
+}
+
+.submit-button.active {
+  background: #ffffff;
+  color: #000000;
+  cursor: pointer;
+}
+
+.submit-button.active:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.submit-button.active:active {
+  transform: scale(0.95);
+}
+
+.input-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%);
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 99px;
+  filter: blur(20px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.prompt-form:focus-within + .input-glow {
+  opacity: 1;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 2.5rem;
+  }
+  .response-title {
+    font-size: 3rem;
+  }
+  .main-content {
+    padding: 1rem;
+  }
+}
