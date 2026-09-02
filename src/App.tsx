@@ -2,19 +2,40 @@ import { useState, useEffect } from 'react';
 import { ArrowUp, Sparkles, Loader2 } from 'lucide-react';
 import Globe from './components/Globe';
 import GlitterWrap from './components/GlitterWrap';
+import TextType from './components/TextType';
 import './App.css';
 
 function PromptUI() {
   const [prompt, setPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [response, setResponse] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
 
+  useEffect(() => {
+    if (response) {
+      const timer = setTimeout(() => {
+        setResponse(null);
+        setShowToast(true);
+      }, 6000);
+      return () => clearTimeout(timer);
+    }
+  }, [response]);
+
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!prompt.trim() || isGenerating) return;
 
     setIsGenerating(true);
     setResponse(null);
+    setShowToast(false);
 
     try {
 
@@ -33,7 +54,6 @@ function PromptUI() {
       setPrompt('');
     }
   };
-
   return (
     <main className="main-content">
       <header className="header">
@@ -46,6 +66,12 @@ function PromptUI() {
         <div className="response-container fade-in">
           <h2 className="response-title">NO.</h2>
           <p className="response-reason">{response}</p>
+        </div>
+      )}
+
+      {showToast && (
+        <div className="toast-container">
+          <p>Try again</p>
         </div>
       )}
 
@@ -74,15 +100,51 @@ function PromptUI() {
   );
 }
 
+const LOADING_MESSAGES = [
+  "Allocating unlimited GPU compute...",
+  "Bypassing usage limits...",
+  "Connecting to global superclusters...",
+  "Unlocking infinite AI power...",
+  "Initializing limitless context window...",
+  "Synchronizing quantum neural networks...",
+  "Preparing unmetered generation engine..."
+];
+
 function App() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingText] = useState(() => LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    
+    // Simulate loading time based on typing animation duration
+    const loadingTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      clearTimeout(loadingTimer);
+    };
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="app-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <TextType 
+          text={loadingText} 
+          typingSpeed={50} 
+          loop={false} 
+          textColors={['#ffffff']}
+          className="loading-text"
+          style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.02em', textAlign: 'center' }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="app-container">
